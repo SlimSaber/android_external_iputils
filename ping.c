@@ -509,7 +509,7 @@ main(int argc, char **argv)
 			int i;
 			rspace[1] = 4+nroute*8;
 			for (i=0; i<nroute; i++)
-				*(__u32*)&rspace[4+i*8] = route[i];
+				memcpy(&rspace[4+i*8], &route[i], 4); //*(__u32*)&rspace[4+i*8] = route[i];
 		}
 		if (setsockopt(icmp_sock, IPPROTO_IP, IP_OPTIONS, rspace, rspace[1]) < 0) {
 			rspace[3] = 2;
@@ -528,8 +528,9 @@ main(int argc, char **argv)
 			: IPOPT_LSRR;
 		rspace[1+IPOPT_OLEN] = 3 + nroute*4;
 		rspace[1+IPOPT_OFFSET] = IPOPT_MINOFF;
-		for (i=0; i<nroute; i++)
-			*(__u32*)&rspace[4+i*4] = route[i];
+		memcpy(&rspace[4], &route[0], 4*nroute);
+		//for (i=0; i<nroute; i++)
+		//	*(__u32*)&rspace[4+i*4] = route[i];
 
 		if (setsockopt(icmp_sock, IPPROTO_IP, IP_OPTIONS, rspace, 4 + nroute*4) < 0) {
 			perror("ping: record route");
