@@ -9,6 +9,7 @@ include $(BUILD_EXECUTABLE)
 include $(CLEAR_VARS)
 LOCAL_CFLAGS := -DWITHOUT_IFADDRS -Wno-sign-compare
 LOCAL_SRC_FILES := ping6.c ping_common.c
+LOCAL_CFLAGS += -fno-strict-aliasing
 LOCAL_MODULE := ping6
 LOCAL_C_INCLUDES := external/openssl/include
 LOCAL_SHARED_LIBRARIES := libcrypto
